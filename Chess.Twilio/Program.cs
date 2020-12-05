@@ -11,7 +11,7 @@ namespace Chess.Twilio
         /// <summary>
         /// This is the entry point of the service host process.
         /// </summary>
-        private static void Main()
+        private static async Task Main()
         {
             try
             {
@@ -20,10 +20,10 @@ namespace Chess.Twilio
                 // When Service Fabric creates an instance of this service type,
                 // an instance of the class is created in this host process.
 
-                ServiceRuntime.RegisterServiceAsync("Chess.TwilioType",
-                    context => new Twilio(context)).GetAwaiter().GetResult();
+                await ServiceRuntime.RegisterServiceAsync("Chess.TwilioType",
+                    context => new Twilio(context));
 
-                ServiceEventSource.Current.ServiceTypeRegistered(Process.GetCurrentProcess().Id, typeof(Twilio).Name);
+                ServiceEventSource.Current.ServiceTypeRegistered(Process.GetCurrentProcess().Id, nameof(Twilio));
 
                 // Prevents this host process from terminating so services keeps running. 
                 Thread.Sleep(Timeout.Infinite);
