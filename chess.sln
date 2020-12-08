@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "Chess.App", "Chess.App\Chess.App.sfproj", "{497D4517-CAA4-421A-BB7B-E08CD6946893}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chess.Twilio", "Chess.Twilio\Chess.Twilio.csproj", "{6964F5F6-F27F-4DFB-BC2D-92E517F51954}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chess.Twilio", "Chess.Twilio\Chess.Twilio.csproj", "{6964F5F6-F27F-4DFB-BC2D-92E517F51954}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chess.Twilio.Tests", "Chess.Twilio.Tests\Chess.Twilio.Tests.csproj", "{6AB60B72-B534-41EA-B911-6002726538E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +33,14 @@ Global
 		{6964F5F6-F27F-4DFB-BC2D-92E517F51954}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6964F5F6-F27F-4DFB-BC2D-92E517F51954}.Release|x64.ActiveCfg = Release|Any CPU
 		{6964F5F6-F27F-4DFB-BC2D-92E517F51954}.Release|x64.Build.0 = Release|Any CPU
+		{6AB60B72-B534-41EA-B911-6002726538E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AB60B72-B534-41EA-B911-6002726538E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AB60B72-B534-41EA-B911-6002726538E5}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{6AB60B72-B534-41EA-B911-6002726538E5}.Debug|x64.Build.0 = Debug|Any CPU
+		{6AB60B72-B534-41EA-B911-6002726538E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AB60B72-B534-41EA-B911-6002726538E5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AB60B72-B534-41EA-B911-6002726538E5}.Release|x64.ActiveCfg = Release|Any CPU
+		{6AB60B72-B534-41EA-B911-6002726538E5}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
