@@ -35,6 +35,18 @@ namespace Chess.Twilio
                 {
                     await context.Response.WriteAsync("Hello World!");
                 });
+
+                endpoints.MapPost("/", async context =>
+                {
+                    context.Response.StatusCode = 200;
+                    context.Response.ContentType = "text/xml";
+                    await context.Response.WriteAsync(@"<?xml version=""1.0"" encoding=""UTF-8""?>
+<Response>
+    <Message>
+        <Body>Response from endpoint</Body>
+    </Message>
+</Response>");
+                });
             });
         }
     }
