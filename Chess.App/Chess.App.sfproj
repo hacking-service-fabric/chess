@@ -32,7 +32,7 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Chess.Twilio\Chess.Twilio.csproj">
+    <ProjectReference Include="..\Chess.TestUI\Chess.TestUI.csproj">
       <ServiceLaunchUrl>http://{MachineName}:{ServicePort}/</ServiceLaunchUrl>
     </ProjectReference>
   </ItemGroup>

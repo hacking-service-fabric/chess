@@ -7,9 +7,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.ServiceFabric.Services.Runtime;
 
-namespace Chess.Twilio
+namespace Chess.TestUI
 {
-    [EventSource(Name = "MyCompany-Chess.App-Chess.Twilio")]
+    [EventSource(Name = "MyCompany-Chess.App-Chess.TestUI")]
     internal sealed class ServiceEventSource : EventSource
     {
         public static readonly ServiceEventSource Current = new ServiceEventSource();

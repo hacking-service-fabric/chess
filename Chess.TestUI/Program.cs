@@ -4,14 +4,14 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Chess.Twilio
+namespace Chess.TestUI
 {
     internal static class Program
     {
         /// <summary>
         /// This is the entry point of the service host process.
         /// </summary>
-        private static async Task Main()
+        private static void Main()
         {
             try
             {
@@ -20,10 +20,10 @@ namespace Chess.Twilio
                 // When Service Fabric creates an instance of this service type,
                 // an instance of the class is created in this host process.
 
-                await ServiceRuntime.RegisterServiceAsync("Chess.TwilioType",
-                    context => new Twilio(context));
+                ServiceRuntime.RegisterServiceAsync("Chess.TestUIType",
+                    context => new TestUI(context)).GetAwaiter().GetResult();
 
-                ServiceEventSource.Current.ServiceTypeRegistered(Process.GetCurrentProcess().Id, nameof(Twilio));
+                ServiceEventSource.Current.ServiceTypeRegistered(Process.GetCurrentProcess().Id, typeof(TestUI).Name);
 
                 // Prevents this host process from terminating so services keeps running. 
                 Thread.Sleep(Timeout.Infinite);

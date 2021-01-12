@@ -12,14 +12,14 @@ using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.ServiceFabric.Services.Runtime;
 using Microsoft.ServiceFabric.Data;
 
-namespace Chess.Twilio
+namespace Chess.TestUI
 {
     /// <summary>
     /// The FabricRuntime creates an instance of this class for each service type instance. 
     /// </summary>
-    internal sealed class Twilio : StatelessService
+    internal sealed class TestUI : StatelessService
     {
-        public Twilio(StatelessServiceContext context)
+        public TestUI(StatelessServiceContext context)
             : base(context)
         { }
 
