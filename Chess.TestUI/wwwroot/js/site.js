@@ -1,4 +1,18 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿function sendUserInput(id, text) {
+    let speeches = document.getElementById('conversation').children,
+        userSpeech = document.getElementById(`user${id}Speech`);
 
-// Write your Javascript code.
+    let speech = document.createElement('div');
+    speech.className = "speechBubble";
+    speech.textContent = text;
+    userSpeech.appendChild(speech);
+
+    let space = document.createElement('div');
+    space.style.height = `${speech.offsetHeight}px`;
+    for (let speech of speeches) {
+        if (speech !== userSpeech) {
+            let spaceClone = space.cloneNode();
+            speech.appendChild(spaceClone);
+        }
+    }
+}

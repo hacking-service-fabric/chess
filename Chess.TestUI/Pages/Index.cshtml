@@ -4,7 +4,49 @@
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div id="conversation" class="row" style="margin-bottom: 45px">
+    <div class="col" id="userASpeech"></div>
+    <div class="col" id="server"></div>
+    <div class="col" id="userBSpeech"></div>
 </div>
+<div class="row footer">
+    <div class="col">
+        <label for="userAInput">A: </label>
+        <input type="text" id="userAInput"/>
+        <input type="button" id="userASend" value="Send"/>
+    </div>
+    <div class="col"></div>
+    <div class="col">
+        <div id="userB">
+            <label for="userBInput">B: </label>
+            <input type="text" id="userBInput"/>
+            <input type="button" id="userBSend" value="Send"/>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    
+    <script type="text/javascript">
+        let setupInput = function(name) {
+            let textInput = document.getElementById(`user${name}Input`),
+                sendButton = document.getElementById(`user${name}Send`);
+
+            sendButton.addEventListener('click',
+                () => {
+                    sendUserInput(name, textInput.value);
+                    textInput.value = "";
+                });
+
+            textInput.addEventListener('keyup',
+                (event) => {
+                    if (event.keyCode === 13) {
+                        sendButton.click();
+                    }
+                });
+        }
+
+        setupInput("A");
+        setupInput("B");
+    </script>
+}
