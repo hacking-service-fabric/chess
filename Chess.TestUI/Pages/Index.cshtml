@@ -26,24 +26,34 @@
 </div>
 
 @section Scripts {
-    
+
     <script type="text/javascript">
         let setupInput = function(name) {
-            let textInput = document.getElementById(`user${name}Input`),
+            const textInput = document.getElementById(`user${name}Input`),
                 sendButton = document.getElementById(`user${name}Send`);
 
             sendButton.addEventListener('click',
                 () => {
-                    sendUserInput(name, textInput.value);
-                    textInput.value = "";
+                    if (textInput.value) {
+                        sendUserInput(name, textInput.value);
+                        textInput.value = "";
+                    }
                 });
 
             textInput.addEventListener('keyup',
-                (event) => {
+                event => {
                     if (event.keyCode === 13) {
                         sendButton.click();
                     }
                 });
+
+            sendButton.parentElement.addEventListener('drop',
+                event => {
+                    sendUserInput(name, textInput.value, event.dataTransfer.files);
+                    textInput.value = "";
+
+                    event.stopPropagation();
+                }, false);
         }
 
         setupInput("A");
