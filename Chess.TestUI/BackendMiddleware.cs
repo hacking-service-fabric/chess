@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Chess.Queue.Common;
+using Chess.Queue.Common.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
@@ -12,8 +14,15 @@ namespace Chess.TestUI
 {
     public class BackendMiddleware: IMiddleware
     {
+        private readonly ISmsQueueServiceAccessor _queueServiceAccessor;
+
         private readonly List<string> _conversation = new List<string>();
         private int _lastResponse = -1;
+
+        public BackendMiddleware(ISmsQueueServiceAccessor queueServiceAccessor)
+        {
+            _queueServiceAccessor = queueServiceAccessor;
+        }
 
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
         {
@@ -71,10 +80,23 @@ namespace Chess.TestUI
             }
         }
 
-        private Task PostAsync(HttpContext context)
+        private async Task PostAsync(HttpContext context)
         {
-            _conversation.Add(context.Request.Form["text"]);
-            return Task.CompletedTask;
+            try
+            {
+                var payload = context.Request.Form["text"];
+
+                await _queueServiceAccessor.GetInstance().Enqueue(new SmsModel
+                {
+                    TextContent = payload
+                });
+
+                _conversation.Add(context.Request.Form["text"]);
+            }
+            catch (Exception e)
+            {
+                ServiceEventSource.Current.ServiceException(e.ToString());
+            }
         }
     }
 }

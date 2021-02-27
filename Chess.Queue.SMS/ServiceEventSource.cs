@@ -7,19 +7,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.ServiceFabric.Services.Runtime;
 
-namespace Chess.TestUI
+namespace Chess.Queue.SMS
 {
-    [EventSource(Name = "MyCompany-Chess.App-Chess.TestUI")]
+    [EventSource(Name = "MyCompany-Chess.App-Chess.Queue.SMS")]
     internal sealed class ServiceEventSource : EventSource
     {
         public static readonly ServiceEventSource Current = new ServiceEventSource();
-
-        static ServiceEventSource()
-        {
-            // A workaround for the problem where ETW activities do not get tracked until Tasks infrastructure is initialized.
-            // This problem will be fixed in .NET Framework 4.6.2.
-            Task.Run(() => { });
-        }
 
         // Instance constructor is private to enforce singleton semantics
         private ServiceEventSource() : base() { }
@@ -55,7 +48,7 @@ namespace Chess.TestUI
         }
 
         private const int MessageEventId = 1;
-        [Event(MessageEventId, Level = EventLevel.Informational, Message = "{0}")]
+        [Event(MessageEventId, Level = EventLevel.Informational, Message="{0}")]
         public void Message(string message)
         {
             if (this.IsEnabled())
@@ -65,16 +58,15 @@ namespace Chess.TestUI
         }
 
         [NonEvent]
-        public void ServiceMessage(ServiceContext serviceContext, string message, params object[] args)
+        public void ServiceMessage(StatefulServiceContext serviceContext, string message, params object[] args)
         {
             if (this.IsEnabled())
             {
-
                 string finalMessage = string.Format(message, args);
                 ServiceMessage(
                     serviceContext.ServiceName.ToString(),
                     serviceContext.ServiceTypeName,
-                    GetReplicaOrInstanceId(serviceContext),
+                    serviceContext.ReplicaId,
                     serviceContext.PartitionId,
                     serviceContext.CodePackageActivationContext.ApplicationName,
                     serviceContext.CodePackageActivationContext.ApplicationTypeName,
@@ -87,17 +79,17 @@ namespace Chess.TestUI
         // This results in more efficient parameter handling, but requires explicit allocation of EventData structure and unsafe code.
         // To enable this code path, define UNSAFE conditional compilation symbol and turn on unsafe code support in project properties.
         private const int ServiceMessageEventId = 2;
-        [Event(ServiceMessageEventId, Level = EventLevel.Informational, Message = "{7}")]
+        [Event(ServiceMessageEventId, Level=EventLevel.Informational, Message="{7}")]
         private
 #if UNSAFE
         unsafe
 #endif
         void ServiceMessage(
-            string serviceName,
-            string serviceTypeName,
+            string serviceName, 
+            string serviceTypeName, 
             long replicaOrInstanceId,
-            Guid partitionId,
-            string applicationName,
+            Guid partitionId, 
+            string applicationName, 
             string applicationTypeName,
             string nodeName,
             string message)
@@ -153,34 +145,9 @@ namespace Chess.TestUI
         {
             WriteEvent(ServiceRequestStopEventId, requestTypeName, exception);
         }
-
-        private const int ServiceExceptionEventId = 7;
-
-        [Event(ServiceExceptionEventId, Level = EventLevel.Error,
-            Message = "Service request failed with exception {0}")]
-        public void ServiceException(string exception)
-        {
-            WriteEvent(ServiceExceptionEventId, exception);
-        }
         #endregion
 
         #region Private methods
-        private static long GetReplicaOrInstanceId(ServiceContext context)
-        {
-            StatelessServiceContext stateless = context as StatelessServiceContext;
-            if (stateless != null)
-            {
-                return stateless.InstanceId;
-            }
-
-            StatefulServiceContext stateful = context as StatefulServiceContext;
-            if (stateful != null)
-            {
-                return stateful.ReplicaId;
-            }
-
-            throw new NotSupportedException("Context type not supported.");
-        }
 #if UNSAFE
         private int SizeInBytes(string s)
         {

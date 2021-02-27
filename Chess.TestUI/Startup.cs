@@ -1,3 +1,4 @@
+using Chess.Queue.Common;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -20,6 +21,7 @@ namespace Chess.TestUI
         {
             services.AddRazorPages();
 
+            services.AddSmsQueueService();
             services.AddSingleton<BackendMiddleware>();
         }
 
