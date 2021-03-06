@@ -29,7 +29,7 @@
          The attribute ServiceTypeName below must match the name defined in the imported ServiceManifest.xml file. -->
     <Service Name="Chess.Queue.SMS" ServicePackageActivationMode="ExclusiveProcess">
       <StatefulService ServiceTypeName="Chess.Queue.SMSType" TargetReplicaSetSize="[Chess.Queue.SMS_TargetReplicaSetSize]" MinReplicaSetSize="[Chess.Queue.SMS_MinReplicaSetSize]">
-        <UniformInt64Partition PartitionCount="[Chess.Queue.SMS_PartitionCount]" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
+        <UniformInt64Partition PartitionCount="[Chess.Queue.SMS_PartitionCount]" LowKey="0" HighKey="99" />
       </StatefulService>
     </Service>
     <Service Name="Chess.TestUI" ServicePackageActivationMode="ExclusiveProcess">

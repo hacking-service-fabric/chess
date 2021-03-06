@@ -8,6 +8,7 @@ using Chess.Queue.Common.Interfaces;
 using Chess.Queue.Common.Models;
 using Microsoft.ServiceFabric.Data.Collections;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
+using Microsoft.ServiceFabric.Services.Remoting.Runtime;
 using Microsoft.ServiceFabric.Services.Runtime;
 
 namespace Chess.Queue.SMS
@@ -29,7 +30,7 @@ namespace Chess.Queue.SMS
         /// </remarks>
         /// <returns>A collection of listeners.</returns>
         protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners()
-            => this.CreateServiceReplicaListeners();
+            => this.CreateServiceRemotingReplicaListeners();
 
         public async Task Enqueue(SmsModel payload)
         {

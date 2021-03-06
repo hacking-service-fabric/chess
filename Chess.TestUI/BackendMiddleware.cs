@@ -86,8 +86,9 @@ namespace Chess.TestUI
             {
                 var payload = context.Request.Form["text"];
 
-                await _queueServiceAccessor.GetInstance().Enqueue(new SmsModel
+                await _queueServiceAccessor.GetInstance(new []{1}).Enqueue(new SmsModel
                 {
+                    Recipients = new [] { 1 },
                     TextContent = payload
                 });
 
