@@ -18,9 +18,13 @@ namespace Chess.Queue.SMS
     /// </summary>
     internal sealed class SMS : StatefulService, ISmsQueueService
     {
-        public SMS(StatefulServiceContext context)
+        private readonly IChessMoveParser _chessMoveParser;
+
+        public SMS(IChessMoveParser chessMoveParser, StatefulServiceContext context)
             : base(context)
-        { }
+        {
+            _chessMoveParser = chessMoveParser;
+        }
 
         /// <summary>
         /// Optional override to create listeners (e.g., HTTP, SMS Remoting, WCF, etc.) for this service replica to handle client or user requests.
@@ -57,9 +61,16 @@ namespace Chess.Queue.SMS
                 using (var tx = this.StateManager.CreateTransaction())
                 {
                     var message = await queue.TryDequeueAsync(tx);
-                    if (message.HasValue)
+                    if (message.HasValue && _chessMoveParser.TryParse(message.Value.TextContent, out var move))
                     {
-                        ServiceEventSource.Current.Message("Got message {0}", message.Value.TextContent);
+                        ServiceEventSource.Current.Message("{0} => {1} {2} from {3}{4} to {5}{6}",
+                            message.Value.TextContent,
+                            move.Piece,
+                            move.Takes ? "takes" : "",
+                            move.StartingFile,
+                            (int?)move.StartingRank,
+                            move.DestinationFile,
+                            (int)move.DestinationRank);
                     }
 
                     await tx.CommitAsync();

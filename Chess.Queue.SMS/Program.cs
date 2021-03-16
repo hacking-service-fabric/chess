@@ -2,6 +2,9 @@ using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
+using Chess.Queue.SMS.Implementations;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.ServiceFabric.Services.Runtime;
 
 namespace Chess.Queue.SMS
@@ -11,7 +14,7 @@ namespace Chess.Queue.SMS
         /// <summary>
         /// This is the entry point of the service host process.
         /// </summary>
-        private static async Task Main()
+        private static async Task Main(string[] args)
         {
             try
             {
@@ -21,9 +24,19 @@ namespace Chess.Queue.SMS
                 // an instance of the class is created in this host process.
 
                 await ServiceRuntime.RegisterServiceAsync("Chess.Queue.SMSType",
-                    context => new SMS(context));
+                    context => Host.CreateDefaultBuilder(args)
+                        .ConfigureServices(services =>
+                        {
+                            services.AddSingleton(context);
+                            services.AddSingleton<IChessMoveParser, ChessMoveParser>();
 
-                ServiceEventSource.Current.ServiceTypeRegistered(Process.GetCurrentProcess().Id, typeof(SMS).Name);
+                            services.AddSingleton<SMS>();
+                        })
+                        .Build()
+                        .Services
+                        .GetService<SMS>());
+
+                ServiceEventSource.Current.ServiceTypeRegistered(Process.GetCurrentProcess().Id, nameof(SMS));
 
                 // Prevents this host process from terminating so services keep running.
                 Thread.Sleep(Timeout.Infinite);
