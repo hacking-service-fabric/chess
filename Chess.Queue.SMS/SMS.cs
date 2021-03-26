@@ -63,14 +63,14 @@ namespace Chess.Queue.SMS
                     var message = await queue.TryDequeueAsync(tx);
                     if (message.HasValue && _chessMoveParser.TryParse(message.Value.TextContent, out var move))
                     {
-                        ServiceEventSource.Current.Message("{0} => {1} {2} from {3}{4} to {5}{6}",
+                        ServiceEventSource.Current.Message("{0} => {1} (takes: {2}) from {3} to {4}, check: {5}, checkmate: {6}",
                             message.Value.TextContent,
                             move.Piece,
-                            move.Takes ? "takes" : "",
-                            move.StartingFile,
-                            (int?)move.StartingRank,
-                            move.DestinationFile,
-                            (int)move.DestinationRank);
+                            move.Takes ? "yes" : "no",
+                            move.FromPosition,
+                            move.ToPosition,
+                            move.Check ? "yes" : "no",
+                            move.Checkmate ? "yes" : "no");
                     }
 
                     await tx.CommitAsync();
