@@ -1,15 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Fabric;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Chess.Queue.Common.Interfaces;
 using Chess.Queue.Common.Models;
 using Microsoft.ServiceFabric.Data.Collections;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.ServiceFabric.Services.Remoting.Runtime;
 using Microsoft.ServiceFabric.Services.Runtime;
+using System;
+using System.Collections.Generic;
+using System.Fabric;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Chess.Queue.SMS
 {
@@ -58,22 +57,31 @@ namespace Chess.Queue.SMS
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                using (var tx = this.StateManager.CreateTransaction())
+                try
                 {
-                    var message = await queue.TryDequeueAsync(tx);
-                    if (message.HasValue && _chessMoveParser.TryParse(message.Value.TextContent, out var move))
+                    throw new NotImplementedException();
+                    using (var tx = this.StateManager.CreateTransaction())
                     {
-                        ServiceEventSource.Current.Message("{0} => {1} (takes: {2}) from {3} to {4}, check: {5}, checkmate: {6}",
-                            message.Value.TextContent,
-                            move.Piece,
-                            move.Takes ? "yes" : "no",
-                            move.FromPosition,
-                            move.ToPosition,
-                            move.Check ? "yes" : "no",
-                            move.Checkmate ? "yes" : "no");
-                    }
+                        var message = await queue.TryDequeueAsync(tx);
+                        if (message.HasValue && _chessMoveParser.TryParse(message.Value.TextContent, out var move))
+                        {
+                            ServiceEventSource.Current.Message(
+                                "{0} => {1} (takes: {2}) from {3} to {4}, check: {5}, checkmate: {6}",
+                                message.Value.TextContent,
+                                move.Piece,
+                                move.Takes ? "yes" : "no",
+                                move.FromPosition,
+                                move.ToPosition,
+                                move.Check ? "yes" : "no",
+                                move.Checkmate ? "yes" : "no");
+                        }
 
-                    await tx.CommitAsync();
+                        await tx.CommitAsync();
+                    }
+                }
+                catch (Exception e)
+                {
+                    ServiceEventSource.Current.ServiceProcessingFailed(e.ToString());
                 }
 
                 await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);

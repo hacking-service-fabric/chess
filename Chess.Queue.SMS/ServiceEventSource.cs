@@ -145,6 +145,13 @@ namespace Chess.Queue.SMS
         {
             WriteEvent(ServiceRequestStopEventId, requestTypeName, exception);
         }
+
+        private const int ServiceProcessingFailedEventId = 7;
+        [Event(ServiceProcessingFailedEventId, Level = EventLevel.Error, Message = "Service processing failed", Keywords = Keywords.ServiceInitialization)]
+        public void ServiceProcessingFailed(string exception)
+        {
+            WriteEvent(ServiceProcessingFailedEventId, exception);
+        }
         #endregion
 
         #region Private methods
