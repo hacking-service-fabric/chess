@@ -7,12 +7,12 @@ using System.Linq;
 
 namespace Chess.Queue.Common.Implementations
 {
-    public class SmsQueueServiceAccessor: ISmsQueueServiceAccessor
+    public class MoveQueueServiceAccessor: IMoveQueueServiceAccessor
     {
-        public ISmsQueueService GetInstance(IEnumerable<int> recipients)
+        public IMoveQueueService GetInstance(IEnumerable<int> recipients)
         {
-            return ServiceProxy.Create<ISmsQueueService>(
-                new Uri("fabric:/Chess.App/Chess.Queue.SMS"),
+            return ServiceProxy.Create<IMoveQueueService>(
+                new Uri("fabric:/Chess.App/Chess.Queue.Move"),
                 new ServicePartitionKey(recipients.Min() % 100));
         }
     }

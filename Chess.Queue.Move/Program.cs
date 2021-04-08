@@ -4,12 +4,11 @@ using System.Fabric;
 using System.Threading;
 using System.Threading.Tasks;
 using Chess.Queue.Common;
-using Chess.Queue.SMS.Implementations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.ServiceFabric.Services.Runtime;
 
-namespace Chess.Queue.SMS
+namespace Chess.Queue.Move
 {
     internal static class Program
     {
@@ -25,10 +24,10 @@ namespace Chess.Queue.SMS
                 // When Service Fabric creates an instance of this service type,
                 // an instance of the class is created in this host process.
 
-                await ServiceRuntime.RegisterServiceAsync("Chess.Queue.SMSType",
+                await ServiceRuntime.RegisterServiceAsync("Chess.Queue.MoveType",
                     context => CreateService(args, context));
 
-                ServiceEventSource.Current.ServiceTypeRegistered(Process.GetCurrentProcess().Id, nameof(SMS));
+                ServiceEventSource.Current.ServiceTypeRegistered(Process.GetCurrentProcess().Id, nameof(Move));
 
                 // Prevents this host process from terminating so services keep running.
                 Thread.Sleep(Timeout.Infinite);
@@ -40,7 +39,7 @@ namespace Chess.Queue.SMS
             }
         }
 
-        private static SMS CreateService(string[] args, StatefulServiceContext context)
+        private static Move CreateService(string[] args, StatefulServiceContext context)
         {
             try
             {
@@ -49,13 +48,12 @@ namespace Chess.Queue.SMS
                     {
                         services.AddSingleton(context);
                         services.AddMoveQueueService();
-                        services.AddSingleton<IChessMoveParser, ChessMoveParser>();
 
-                        services.AddSingleton<SMS>();
+                        services.AddSingleton<Move>();
                     })
                     .Build()
                     .Services
-                    .GetService<SMS>();
+                    .GetService<Move>();
             }
             catch (Exception e)
             {

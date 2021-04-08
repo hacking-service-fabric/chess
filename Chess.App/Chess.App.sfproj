@@ -32,6 +32,7 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Chess.Queue.Move\Chess.Queue.Move.csproj" />
     <ProjectReference Include="..\Chess.Queue.SMS\Chess.Queue.SMS.csproj" />
     <ProjectReference Include="..\Chess.TestUI\Chess.TestUI.csproj">
       <ServiceLaunchUrl>http://{MachineName}:{ServicePort}/</ServiceLaunchUrl>
