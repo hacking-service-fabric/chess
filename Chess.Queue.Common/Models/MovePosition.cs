@@ -8,13 +8,26 @@ namespace Chess.Queue.Common.Models
     public enum MovePosition: byte
     {
         Empty = 0,
-        FileAddOne = 1,
-        FileAddTwo = 2,
-        FileAddFour = 4,
-        FileUnknown = 8,
-        RankAddOne = 16,
-        RankAddTwo = 32,
-        RankAddFour = 64,
-        RankUnknown = 128
+        HasFile = 1,
+        HasRank = 16,
+
+        // Members for testing and printing
+        FileA = 1,
+        FileB = 3,
+        FileC = 5,
+        FileD = 7,
+        FileE = 9,
+        FileF = 11,
+        FileG = 13,
+        FileH = 15,
+
+        Rank1 = 16,
+        Rank2 = 48,
+        Rank3 = 80,
+        Rank4 = 112,
+        Rank5 = 144,
+        Rank6 = 176,
+        Rank7 = 208,
+        Rank8 = 240
     }
 }

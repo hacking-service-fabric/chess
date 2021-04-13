@@ -65,7 +65,7 @@ namespace Chess.Queue.Move
 
                             ServiceEventSource.Current.Message(
                                 "{0} (takes: {1}) from {2} to {3}, check: {4}, checkmate: {5}",
-                                move.Piece,
+                                move.Description,
                                 move.Takes ? "yes" : "no",
                                 move.FromPosition,
                                 move.ToPosition,
