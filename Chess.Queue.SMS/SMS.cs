@@ -1,3 +1,4 @@
+using Chess.Queue.Common;
 using Chess.Queue.Common.Interfaces;
 using Chess.Queue.Common.Models;
 using Microsoft.ServiceFabric.Data.Collections;
@@ -6,10 +7,10 @@ using Microsoft.ServiceFabric.Services.Remoting.Runtime;
 using Microsoft.ServiceFabric.Services.Runtime;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Fabric;
 using System.Threading;
 using System.Threading.Tasks;
-using Chess.Queue.Common;
 
 namespace Chess.Queue.SMS
 {
@@ -35,6 +36,7 @@ namespace Chess.Queue.SMS
         /// For more information on service communication, see https://aka.ms/servicefabricservicecommunication
         /// </remarks>
         /// <returns>A collection of listeners.</returns>
+        [ExcludeFromCodeCoverage]
         protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners()
             => this.CreateServiceRemotingReplicaListeners();
 

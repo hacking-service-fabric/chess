@@ -1,17 +1,24 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Chess.Queue.Common.Models
 {
     [Flags]
     public enum MovePosition: byte
     {
-        Empty = 0,
-        HasFile = 1,
-        HasRank = 16,
+        // Serializing options
+        HasFile = 1 << 0,
+        File001 = 1 << 1,
+        File010 = 1 << 2,
+        File100 = 1 << 3,
+
+        HasRank = 1 << 4,
+        Rank001 = 1 << 5,
+        Rank010 = 1 << 6,
+        Rank100 = 1 << 7,
 
         // Members for testing and printing
+        Empty = 0,
+
         FileA = 1,
         FileB = 3,
         FileC = 5,

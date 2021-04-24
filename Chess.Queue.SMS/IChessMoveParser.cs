@@ -1,5 +1,4 @@
-﻿using Chess.Common.Models;
-using Chess.Queue.Common.Models;
+﻿using Chess.Queue.Common.Models;
 
 namespace Chess.Queue.SMS
 {

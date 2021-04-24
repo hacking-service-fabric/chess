@@ -1,13 +1,13 @@
-using System;
-using System.Diagnostics;
-using System.Fabric;
-using System.Threading;
-using System.Threading.Tasks;
 using Chess.Queue.Common;
 using Chess.Queue.SMS.Implementations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.ServiceFabric.Services.Runtime;
+using System;
+using System.Diagnostics;
+using System.Fabric;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Chess.Queue.SMS
 {

@@ -1,15 +1,14 @@
-using System;
-using System.Collections.Generic;
-using System.Fabric;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Chess.Queue.Common.Interfaces;
 using Chess.Queue.Common.Models;
 using Microsoft.ServiceFabric.Data.Collections;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.ServiceFabric.Services.Remoting.Runtime;
 using Microsoft.ServiceFabric.Services.Runtime;
+using System;
+using System.Collections.Generic;
+using System.Fabric;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Chess.Queue.Move
 {
@@ -64,13 +63,10 @@ namespace Chess.Queue.Move
                             var move = maybeMove.Value;
 
                             ServiceEventSource.Current.Message(
-                                "{0} (takes: {1}) from {2} to {3}, check: {4}, checkmate: {5}",
+                                "{0} from {1} to {2}",
                                 move.Description,
-                                move.Takes ? "yes" : "no",
                                 move.FromPosition,
-                                move.ToPosition,
-                                move.Check ? "yes" : "no",
-                                move.Checkmate ? "yes" : "no");
+                                move.ToPosition);
                         }
 
                         await tx.CommitAsync();

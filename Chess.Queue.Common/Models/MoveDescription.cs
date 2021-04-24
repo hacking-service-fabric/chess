@@ -5,17 +5,23 @@ namespace Chess.Queue.Common.Models
     [Flags]
     public enum MoveDescription: byte
     {
+        // Piece information
         Empty,
         King,
         Queen,
         Rook,
         Bishop,
         Knight,
-        Castle = 1 << 3,
-        Takes = 1 << 4,
-        Promotion = 1 << 5,
+
+        // Special states
+        KingSideCastle,
+        QueenSideCastle,
+        Resign,
+
+        // Flags
+        Promotion = 1 << 4,
+        Capture = 1 << 5,
         Check = 1 << 6,
-        Checkmate = 1 << 7,
-        Resign = Check | Checkmate
+        Checkmate = 1 << 7
     }
 }
