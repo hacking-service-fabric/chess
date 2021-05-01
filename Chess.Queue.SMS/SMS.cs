@@ -69,7 +69,7 @@ namespace Chess.Queue.SMS
                         var message = await queue.TryDequeueAsync(tx);
                         if (message.HasValue && _chessMoveParser.TryParse(message.Value.TextContent, out var move))
                         {
-                            await _moveQueueServiceAccessor.GetInstance(message.Value.Recipients)
+                            await _moveQueueServiceAccessor.GetInstance(message.Value.Conversation.RecipientPhoneNumbers)
                                 .Enqueue(move);
                         }
 

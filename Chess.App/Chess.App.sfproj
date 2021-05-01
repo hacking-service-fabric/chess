@@ -32,8 +32,12 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Chess.Data.Conversation\Chess.Data.Conversation.csproj" />
+    <ProjectReference Include="..\Chess.Data.Game\Chess.Data.Game.csproj" />
     <ProjectReference Include="..\Chess.Queue.Move\Chess.Queue.Move.csproj" />
     <ProjectReference Include="..\Chess.Queue.SMS\Chess.Queue.SMS.csproj" />
+    <ProjectReference Include="..\Chess.Repository.BugReport\Chess.Repository.BugReport.csproj" />
+    <ProjectReference Include="..\Chess.Repository.Conversation\Chess.Repository.Conversation.csproj" />
     <ProjectReference Include="..\Chess.TestUI\Chess.TestUI.csproj">
       <ServiceLaunchUrl>http://{MachineName}:{ServicePort}/</ServiceLaunchUrl>
     </ProjectReference>

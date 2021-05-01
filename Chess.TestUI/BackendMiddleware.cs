@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Chess.Data.Common.Models;
 using Chess.Queue.Common;
 using Chess.Queue.Common.Models;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
+using PhoneNumbers;
 
 namespace Chess.TestUI
 {
@@ -84,11 +86,20 @@ namespace Chess.TestUI
         {
             try
             {
+                var recipients = new[]
+                {
+                    new PhoneNumber(),
+                    new PhoneNumber()
+                };
                 var payload = context.Request.Form["text"];
 
-                await _queueServiceAccessor.GetInstance(new []{1}).Enqueue(new SmsModel
+                await _queueServiceAccessor.GetInstance(recipients).Enqueue(new SmsModel
                 {
-                    Recipients = new [] { 1 },
+                    Conversation = new Conversation
+                    {
+                        HostPhoneNumber = new PhoneNumber(),
+                        RecipientPhoneNumbers = recipients
+                    },
                     TextContent = payload
                 });
 
