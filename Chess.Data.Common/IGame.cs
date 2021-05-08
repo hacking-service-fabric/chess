@@ -1,8 +1,9 @@
-﻿using System.Threading.Tasks;
+﻿using Microsoft.ServiceFabric.Actors;
+using System.Threading.Tasks;
 
 namespace Chess.Data.Common
 {
-    public interface IGame
+    public interface IGame: IActor
     {
         Task Move();
     }

@@ -15,6 +15,12 @@
     <Parameter Name="Chess.Queue.SMS_TargetReplicaSetSize" DefaultValue="3" />
     <Parameter Name="Chess.TestUI_ASPNETCORE_ENVIRONMENT" DefaultValue="" />
     <Parameter Name="Chess.TestUI_InstanceCount" DefaultValue="-1" />
+    <Parameter Name="ConversationActorService_PartitionCount" DefaultValue="10" />
+    <Parameter Name="ConversationActorService_MinReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="ConversationActorService_TargetReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="GameActorService_PartitionCount" DefaultValue="10" />
+    <Parameter Name="GameActorService_MinReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="GameActorService_TargetReplicaSetSize" DefaultValue="3" />
   </Parameters>
   <!-- Import the ServiceManifest from the ServicePackage. The ServiceManifestName and ServiceManifestVersion 
        should match the Name and Version attributes of the ServiceManifest element defined in the 
@@ -78,6 +84,16 @@
       <StatelessService ServiceTypeName="Chess.TestUIType" InstanceCount="[Chess.TestUI_InstanceCount]">
         <SingletonPartition />
       </StatelessService>
+    </Service>
+    <Service Name="ConversationActorService" GeneratedIdRef="10c74a5f-3445-4581-83f8-32093c2a887c|Persisted">
+      <StatefulService ServiceTypeName="ConversationActorServiceType" TargetReplicaSetSize="[ConversationActorService_TargetReplicaSetSize]" MinReplicaSetSize="[ConversationActorService_MinReplicaSetSize]">
+        <UniformInt64Partition PartitionCount="[ConversationActorService_PartitionCount]" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
+      </StatefulService>
+    </Service>
+    <Service Name="GameActorService" GeneratedIdRef="be39f42d-6001-4d5b-9c46-26fa1da35b4f|Persisted">
+      <StatefulService ServiceTypeName="GameActorServiceType" TargetReplicaSetSize="[GameActorService_TargetReplicaSetSize]" MinReplicaSetSize="[GameActorService_MinReplicaSetSize]">
+        <UniformInt64Partition PartitionCount="[GameActorService_PartitionCount]" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
+      </StatefulService>
     </Service>
   </DefaultServices>
 </ApplicationManifest>
