@@ -1,10 +1,10 @@
-﻿using Chess.Data.Common.Models;
+﻿using Chess.Data.Common.Models.V1;
 
 namespace Chess.Queue.Common.Models
 {
     public class SmsModel
     {
-        public Conversation Conversation { get; set; }
+        public ConversationDto Conversation { get; set; }
         public string TextContent { get; set; }
     }
 }

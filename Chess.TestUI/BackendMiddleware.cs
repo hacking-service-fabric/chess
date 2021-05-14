@@ -1,16 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-using Chess.Data.Common.Models;
+using Chess.Data.Common.Models.V1;
 using Chess.Queue.Common;
 using Chess.Queue.Common.Models;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Extensions;
 using PhoneNumbers;
+using System;
+using System.Collections.Generic;
+using System.Text.Json;
+using System.Threading.Tasks;
 
 namespace Chess.TestUI
 {
@@ -95,10 +91,10 @@ namespace Chess.TestUI
 
                 await _queueServiceAccessor.GetInstance(recipients).Enqueue(new SmsModel
                 {
-                    Conversation = new Conversation
+                    Conversation = new ConversationDto
                     {
                         HostPhoneNumber = new PhoneNumber(),
-                        RecipientPhoneNumbers = recipients
+                        PhoneNumbers = recipients
                     },
                     TextContent = payload
                 });

@@ -1,3 +1,5 @@
+using Chess.Data.Common;
+using Chess.Data.Common.Models.V1;
 using Chess.Queue.Common.Interfaces;
 using Chess.Queue.Common.Models;
 using Microsoft.ServiceFabric.Data.Collections;
@@ -17,9 +19,14 @@ namespace Chess.Queue.Move
     /// </summary>
     internal sealed class Move : StatefulService, IMoveQueueService
     {
-        public Move(StatefulServiceContext context)
+        private readonly IConversationRepository _conversationRepository;
+
+        public Move(StatefulServiceContext context,
+            IConversationRepository conversationRepository)
             : base(context)
-        { }
+        {
+            _conversationRepository = conversationRepository;
+        }
 
         /// <summary>
         /// Optional override to create listeners (e.g., HTTP, Service Remoting, WCF, etc.) for this service replica to handle client or user requests.
@@ -31,7 +38,7 @@ namespace Chess.Queue.Move
         protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners()
             => this.CreateServiceRemotingReplicaListeners();
 
-        public async Task Enqueue(MoveModel payload)
+        public async Task Enqueue(ConversationDto conversation, MoveDtoBase payload)
         {
             var queue = await StateManager.GetOrAddAsync<IReliableQueue<MoveModel>>("MoveQueue");
 
@@ -67,6 +74,11 @@ namespace Chess.Queue.Move
                                 move.Description,
                                 move.FromPosition,
                                 move.ToPosition);
+                            
+                            var conversation = await _conversationRepository.GetConversation(move.Conversation);
+                            var game = await conversation.GetGame();
+                            var response = game.Move(move);
+                            // TODO queue text response
                         }
 
                         await tx.CommitAsync();

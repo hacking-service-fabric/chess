@@ -1,14 +1,12 @@
-﻿using System;
+﻿using Chess.Data.Common.Models.V1;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using Chess.Data.Common.Models;
 
 namespace Chess.Data.Common
 {
     public interface IBugReportRepository
     {
-        Task<IEnumerable<BugReport>> GetReports(int skip, int limit);
+        Task AddReport(BugReportDto report);
+        Task<IEnumerable<BugReportDto>> GetReports(int skip, int limit);
     }
 }

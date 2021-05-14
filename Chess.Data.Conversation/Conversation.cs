@@ -1,13 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Chess.Data.Common;
-using Chess.Data.Common.Models;
+using Chess.Data.Common.Models.V1;
 using Microsoft.ServiceFabric.Actors;
 using Microsoft.ServiceFabric.Actors.Runtime;
-using Microsoft.ServiceFabric.Actors.Client;
+using System;
+using System.Threading.Tasks;
 
 namespace Chess.Data.Conversation
 {
@@ -23,7 +19,7 @@ namespace Chess.Data.Conversation
     internal class Conversation : Actor, IConversation
     {
         /// <summary>
-        /// Initializes a new instance of Conversation
+        /// Initializes a new instance of ConversationDto
         /// </summary>
         /// <param name="actorService">The Microsoft.ServiceFabric.Actors.Runtime.ActorService that will host this actor instance.</param>
         /// <param name="actorId">The Microsoft.ServiceFabric.Actors.ActorId for this actor instance.</param>
@@ -48,22 +44,22 @@ namespace Chess.Data.Conversation
             return this.StateManager.TryAddStateAsync("count", 0);
         }
 
-        public async Task<IGame> GetCurrentGame()
+        public async Task<IGame> GetGame()
         {
             throw new NotImplementedException();
         }
 
-        public async Task<IGame> StartNewGame()
+        public async Task<IGame> NewGame()
         {
             throw new NotImplementedException();
         }
 
-        public async Task<Message> GetMessageAt(DateTime time)
+        public async Task<MessageDto> GetMessageAt(DateTime time)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<Message> GetMessageBefore(Message message)
+        public async Task<MessageDto> GetMessageBefore(MessageDto message)
         {
             throw new NotImplementedException();
         }
