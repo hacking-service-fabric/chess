@@ -6,9 +6,9 @@ namespace Chess.Queue.Common
     public static class ServiceExtensions
     {
         public static IServiceCollection AddSmsQueueService(this IServiceCollection services)
-            => services.AddSingleton<ISmsQueueServiceAccessor, SmsQueueServiceAccessor>();
+            => services.AddSingleton<ISmsQueueService, SmsQueueServiceAccessor>();
 
         public static IServiceCollection AddMoveQueueService(this IServiceCollection services)
-            => services.AddSingleton<IMoveQueueServiceAccessor, MoveQueueServiceAccessor>();
+            => services.AddSingleton<IMoveQueueService, MoveQueueServiceAccessor>();
     }
 }

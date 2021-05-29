@@ -1,6 +1,6 @@
 ﻿using Chess.Queue.Common.Models;
 
-namespace Chess.Queue.SMS
+namespace Chess.Queue.Move
 {
     public interface IChessMoveParser
     {

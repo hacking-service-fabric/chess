@@ -2,10 +2,10 @@
 using Microsoft.ServiceFabric.Services.Remoting;
 using System.Threading.Tasks;
 
-namespace Chess.Queue.Common.Interfaces
+namespace Chess.Queue.Common
 {
     public interface IMoveQueueService: IService
     {
-        Task Enqueue(ConversationDto conversation, MoveDtoBase payload);
+        Task Enqueue(ConversationDto conversation, ushort conversationMessageId);
     }
 }

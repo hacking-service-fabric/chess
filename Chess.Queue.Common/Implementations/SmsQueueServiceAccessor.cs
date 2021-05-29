@@ -1,14 +1,15 @@
-﻿using Chess.Queue.Common.Interfaces;
+﻿using Chess.Data.Common.Models.V1;
 using Microsoft.ServiceFabric.Services.Client;
 using Microsoft.ServiceFabric.Services.Remoting.Client;
+using PhoneNumbers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using PhoneNumbers;
+using System.Threading.Tasks;
 
 namespace Chess.Queue.Common.Implementations
 {
-    public class SmsQueueServiceAccessor: ISmsQueueServiceAccessor
+    public class SmsQueueServiceAccessor: ISmsQueueService
     {
         public ISmsQueueService GetInstance(IEnumerable<PhoneNumber> recipients)
         {
@@ -20,6 +21,11 @@ namespace Chess.Queue.Common.Implementations
             return ServiceProxy.Create<ISmsQueueService>(
                 new Uri("fabric:/Chess.App/Chess.Queue.SMS"),
                 new ServicePartitionKey(key));
+        }
+
+        public async Task Enqueue(ConversationDto conversation, MessageDto message)
+        {
+            await GetInstance(conversation.PhoneNumbers).Enqueue(conversation, message);
         }
     }
 }

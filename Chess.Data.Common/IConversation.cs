@@ -1,6 +1,5 @@
 ﻿using Chess.Data.Common.Models.V1;
 using Microsoft.ServiceFabric.Actors;
-using System;
 using System.Threading.Tasks;
 
 namespace Chess.Data.Common
@@ -9,7 +8,7 @@ namespace Chess.Data.Common
     {
         Task<IGame> GetGame();
 
-        Task<MessageDto> GetMessageAt(DateTime time);
-        Task<MessageDto> GetMessageBefore(MessageDto message);
+        Task<ushort> WriteMessage(MessageDto message);
+        Task<MessageDto> GetMessage(ushort messageId);
     }
 }

@@ -1,6 +1,5 @@
 using Chess.Data.Common;
 using Chess.Data.Common.Models.V1;
-using Chess.Queue.Common.Interfaces;
 using Chess.Queue.Common.Models;
 using Microsoft.ServiceFabric.Data.Collections;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
@@ -11,6 +10,7 @@ using System.Collections.Generic;
 using System.Fabric;
 using System.Threading;
 using System.Threading.Tasks;
+using Chess.Queue.Common;
 
 namespace Chess.Queue.Move
 {

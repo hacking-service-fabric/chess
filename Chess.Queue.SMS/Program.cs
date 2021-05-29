@@ -1,5 +1,5 @@
+using Chess.Data.Common;
 using Chess.Queue.Common;
-using Chess.Queue.SMS.Implementations;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.ServiceFabric.Services.Runtime;
@@ -48,8 +48,8 @@ namespace Chess.Queue.SMS
                     .ConfigureServices(services =>
                     {
                         services.AddSingleton(context);
+                        services.AddConversationRepository();
                         services.AddMoveQueueService();
-                        services.AddSingleton<IChessMoveParser, ChessMoveParser>();
 
                         services.AddSingleton<SMS>();
                     })

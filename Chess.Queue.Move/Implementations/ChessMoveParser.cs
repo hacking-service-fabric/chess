@@ -1,8 +1,8 @@
-﻿using Chess.Queue.Common.Models;
-using System.Linq;
+﻿using System.Linq;
 using System.Text.RegularExpressions;
+using Chess.Queue.Common.Models;
 
-namespace Chess.Queue.SMS.Implementations
+namespace Chess.Queue.Move.Implementations
 {
     public class ChessMoveParser: IChessMoveParser
     {

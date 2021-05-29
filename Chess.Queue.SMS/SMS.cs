@@ -1,6 +1,6 @@
+using Chess.Data.Common.Models.V1;
 using Chess.Queue.Common;
-using Chess.Queue.Common.Interfaces;
-using Chess.Queue.Common.Models;
+using Chess.Queue.SMS.Models;
 using Microsoft.ServiceFabric.Data.Collections;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.ServiceFabric.Services.Remoting.Runtime;
@@ -11,6 +11,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Fabric;
 using System.Threading;
 using System.Threading.Tasks;
+using Chess.Data.Common;
 
 namespace Chess.Queue.SMS
 {
@@ -19,13 +20,13 @@ namespace Chess.Queue.SMS
     /// </summary>
     internal sealed class SMS : StatefulService, ISmsQueueService
     {
-        private readonly IChessMoveParser _chessMoveParser;
-        private readonly IMoveQueueServiceAccessor _moveQueueServiceAccessor;
+        private readonly IConversationRepository _conversationRepository;
+        private readonly IMoveQueueService _moveQueueServiceAccessor;
 
-        public SMS(IChessMoveParser chessMoveParser, IMoveQueueServiceAccessor moveQueueServiceAccessor, StatefulServiceContext context)
+        public SMS(IConversationRepository conversationRepository, IMoveQueueService moveQueueServiceAccessor, StatefulServiceContext context)
             : base(context)
         {
-            _chessMoveParser = chessMoveParser;
+            _conversationRepository = conversationRepository;
             _moveQueueServiceAccessor = moveQueueServiceAccessor;
         }
 
@@ -40,12 +41,16 @@ namespace Chess.Queue.SMS
         protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners()
             => this.CreateServiceRemotingReplicaListeners();
 
-        public async Task Enqueue(SmsModel payload)
+        public async Task Enqueue(ConversationDto conversation, MessageDto message)
         {
             var queue = await StateManager.GetOrAddAsync<IReliableQueue<SmsModel>>("SMSQueue");
 
             using var tx = StateManager.CreateTransaction();
-            await queue.EnqueueAsync(tx, payload);
+            await queue.EnqueueAsync(tx, new SmsModel
+            {
+                Conversation = conversation,
+                Message = message
+            });
             await tx.CommitAsync();
         }
 
@@ -64,19 +69,31 @@ namespace Chess.Queue.SMS
 
                 try
                 {
+                    var hasMessage = false;
                     using (var tx = this.StateManager.CreateTransaction())
                     {
                         var message = await queue.TryDequeueAsync(tx);
-                        if (message.HasValue && _chessMoveParser.TryParse(message.Value.TextContent, out var move))
-                        {
-                            await _moveQueueServiceAccessor.GetInstance(message.Value.Conversation.PhoneNumbers)
-                                .Enqueue(move);
-                        }
 
+                        if (message.HasValue)
+                        {
+                            var conversation = await _conversationRepository.GetConversation(message.Value.Conversation);
+                            var messageId = await conversation.WriteMessage(message.Value.Message);
+
+                            if (string.IsNullOrEmpty(message.Value.Message.MediaUrl))
+                            {
+                                await _moveQueueServiceAccessor.Enqueue(message.Value.Conversation, messageId);
+                            }
+
+                            hasMessage = true;
+                        }
+                        
                         await tx.CommitAsync();
                     }
 
-                    await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
+                    if (!hasMessage)
+                    {
+                        await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
+                    }
                 }
                 catch (Exception e)
                 {

@@ -8,5 +8,6 @@ namespace Chess.Data.Common.Models.V1
         public DateTime MessageTime { get; set; }
         public PhoneNumber FromPhoneNumber { get; set; }
         public string Text { get; set; }
+        public string MediaUrl { get; set; }
     }
 }

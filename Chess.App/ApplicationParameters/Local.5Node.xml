@@ -7,7 +7,7 @@
     <Parameter Name="Chess.Repository.Conversation_PartitionCount" Value="1" />
     <Parameter Name="Chess.Repository.Conversation_MinReplicaSetSize" Value="3" />
     <Parameter Name="Chess.Repository.Conversation_TargetReplicaSetSize" Value="3" />
-    <Parameter Name="Chess.Queue.Move_PartitionCount" Value="1" />
+    <Parameter Name="Chess.Queue.Move_PartitionCount" Value="-1" />
     <Parameter Name="Chess.Queue.Move_MinReplicaSetSize" Value="3" />
     <Parameter Name="Chess.Queue.Move_TargetReplicaSetSize" Value="3" />
     <Parameter Name="Chess.Queue.SMS_PartitionCount" Value="2" />
