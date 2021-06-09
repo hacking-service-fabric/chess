@@ -1,5 +1,4 @@
 ﻿using Chess.Queue.Common.Models;
-using Chess.Queue.SMS.Implementations;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Chess.Queue.SMS.Tests.UnitTests.Implementations

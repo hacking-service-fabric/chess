@@ -6,6 +6,6 @@ namespace Chess.Data.Common
 {
     public interface IGame: IActor
     {
-        Task Move(MoveDtoBase move);
+        Task<MoveResultDtoBase> TryMove(MessageDto message);
     }
 }

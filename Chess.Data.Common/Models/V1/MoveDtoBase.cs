@@ -1,5 +1,4 @@
 ﻿using System.Runtime.Serialization;
-using PhoneNumbers;
 
 namespace Chess.Data.Common.Models.V1
 {
@@ -9,7 +8,5 @@ namespace Chess.Data.Common.Models.V1
     [KnownType(typeof(MovePromotionDto))]
     [KnownType(typeof(MovePieceDto))]
     public abstract class MoveDtoBase
-    {
-        public PhoneNumber FromPhoneNumber { get; set; }
-    }
+    { }
 }

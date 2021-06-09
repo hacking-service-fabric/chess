@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Fabric;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Chess.Data.Common;
@@ -79,7 +80,8 @@ namespace Chess.Queue.SMS
                             var conversation = await _conversationRepository.GetConversation(message.Value.Conversation);
                             var messageId = await conversation.WriteMessage(message.Value.Message);
 
-                            if (string.IsNullOrEmpty(message.Value.Message.MediaUrl))
+                            if (string.IsNullOrEmpty(message.Value.Message.MediaUrl) &&
+                                message.Value.Message.Text.Trim().All(c => c != ' '))
                             {
                                 await _moveQueueServiceAccessor.Enqueue(message.Value.Conversation, messageId);
                             }

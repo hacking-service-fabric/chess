@@ -6,6 +6,6 @@ namespace Chess.Queue.Common
 {
     public interface IReplyQueueService: IService
     {
-        Task Enqueue(ConversationDto conversation, string textMessage, string mediaUrl);
+        Task Enqueue(ConversationDto conversation, MoveResultDtoBase replyContent);
     }
 }

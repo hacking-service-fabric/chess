@@ -23,9 +23,9 @@ namespace Chess.Queue.Common.Implementations
                 new ServicePartitionKey(key));
         }
 
-        public async Task Enqueue(ConversationDto conversation, MessageDto message)
+        public async Task Enqueue(ConversationDto conversation, ushort conversationMessageId)
         {
-            await GetInstance(conversation.PhoneNumbers).Enqueue(conversation, message);
+            await GetInstance(conversation.PhoneNumbers).Enqueue(conversation, conversationMessageId);
         }
     }
 }

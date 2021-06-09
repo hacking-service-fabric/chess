@@ -18,9 +18,12 @@ namespace Chess.Queue.Common.Implementations
                 new ServicePartitionKey(key));
         }
 
-        public async Task Enqueue(ConversationDto conversation, MessageDto message)
+        public async Task Enqueue(ConversationDto conversation, MoveResultDtoBase message)
         {
-            await GetInstance(conversation.HostPhoneNumber).Enqueue(conversation, message);
+            if (message is not null && message is not NoReplyDto)
+            {
+                await GetInstance(conversation.HostPhoneNumber).Enqueue(conversation, message);
+            }
         }
     }
 }

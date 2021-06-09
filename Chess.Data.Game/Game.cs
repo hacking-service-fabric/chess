@@ -1,7 +1,8 @@
 using Chess.Data.Common;
+using Chess.Data.Common.Models.V1;
 using Microsoft.ServiceFabric.Actors;
 using Microsoft.ServiceFabric.Actors.Runtime;
-using System.Threading;
+using PhoneNumbers;
 using System.Threading.Tasks;
 
 namespace Chess.Data.Game
@@ -17,14 +18,18 @@ namespace Chess.Data.Game
     [StatePersistence(StatePersistence.Persisted)]
     internal class Game : Actor, IGame
     {
+        private readonly IChessMoveParser _moveParser;
+
         /// <summary>
         /// Initializes a new instance of Game
         /// </summary>
         /// <param name="actorService">The Microsoft.ServiceFabric.Actors.Runtime.ActorService that will host this actor instance.</param>
         /// <param name="actorId">The Microsoft.ServiceFabric.Actors.ActorId for this actor instance.</param>
-        public Game(ActorService actorService, ActorId actorId) 
-            : base(actorService, actorId)
+        public Game(ActorService actorService, ActorId actorId,
+            IChessMoveParser moveParser
+        ) : base(actorService, actorId)
         {
+            _moveParser = moveParser;
         }
 
         /// <summary>
@@ -43,9 +48,14 @@ namespace Chess.Data.Game
             return this.StateManager.TryAddStateAsync("count", 0);
         }
 
-        public async Task Move()
+        public async Task<MoveResultDtoBase> TryMove(MessageDto message)
         {
-            throw new System.NotImplementedException();
+            PhoneNumber some = null;
+            if (message.FromPhoneNumber.Equals(some) &&_moveParser.TryParse(message.Text, out var move))
+            {
+            }
+
+            return NoReplyDto.Instance;
         }
     }
 }

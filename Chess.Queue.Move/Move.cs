@@ -1,6 +1,7 @@
 using Chess.Data.Common;
 using Chess.Data.Common.Models.V1;
-using Chess.Queue.Common.Models;
+using Chess.Queue.Common;
+using Chess.Queue.Move.Model;
 using Microsoft.ServiceFabric.Data.Collections;
 using Microsoft.ServiceFabric.Services.Communication.Runtime;
 using Microsoft.ServiceFabric.Services.Remoting.Runtime;
@@ -10,7 +11,6 @@ using System.Collections.Generic;
 using System.Fabric;
 using System.Threading;
 using System.Threading.Tasks;
-using Chess.Queue.Common;
 
 namespace Chess.Queue.Move
 {
@@ -20,12 +20,15 @@ namespace Chess.Queue.Move
     internal sealed class Move : StatefulService, IMoveQueueService
     {
         private readonly IConversationRepository _conversationRepository;
+        private readonly IReplyQueueService _replyQueueService;
 
         public Move(StatefulServiceContext context,
-            IConversationRepository conversationRepository)
+            IConversationRepository conversationRepository,
+            IReplyQueueService replyQueueService)
             : base(context)
         {
             _conversationRepository = conversationRepository;
+            _replyQueueService = replyQueueService;
         }
 
         /// <summary>
@@ -38,12 +41,16 @@ namespace Chess.Queue.Move
         protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners()
             => this.CreateServiceRemotingReplicaListeners();
 
-        public async Task Enqueue(ConversationDto conversation, MoveDtoBase payload)
+        public async Task Enqueue(ConversationDto conversation, ushort conversationMessageId)
         {
-            var queue = await StateManager.GetOrAddAsync<IReliableQueue<MoveModel>>("MoveQueue");
+            var queue = await StateManager.GetOrAddAsync<IReliableQueue<MessageModel>>("MoveQueue");
 
             using var tx = StateManager.CreateTransaction();
-            await queue.EnqueueAsync(tx, payload);
+            await queue.EnqueueAsync(tx, new MessageModel
+            {
+                Conversation = conversation,
+                ConversationMessageId = conversationMessageId
+            });
             await tx.CommitAsync();
         }
 
@@ -54,7 +61,7 @@ namespace Chess.Queue.Move
         /// <param name="cancellationToken">Canceled when Service Fabric needs to shut down this service replica.</param>
         protected override async Task RunAsync(CancellationToken cancellationToken)
         {
-            var queue = await StateManager.GetOrAddAsync<IReliableQueue<MoveModel>>("MoveQueue");
+            var queue = await StateManager.GetOrAddAsync<IReliableQueue<MessageModel>>("MoveQueue");
 
             while (true)
             {
@@ -68,17 +75,14 @@ namespace Chess.Queue.Move
                         if (maybeMove.HasValue)
                         {
                             var move = maybeMove.Value;
-
-                            ServiceEventSource.Current.Message(
-                                "{0} from {1} to {2}",
-                                move.Description,
-                                move.FromPosition,
-                                move.ToPosition);
                             
                             var conversation = await _conversationRepository.GetConversation(move.Conversation);
                             var game = await conversation.GetGame();
-                            var response = game.Move(move);
-                            // TODO queue text response
+
+                            var message = await conversation.GetMessage(move.ConversationMessageId);
+                            var response = await game.TryMove(message);
+
+                            await _replyQueueService.Enqueue(move.Conversation, response);
                         }
 
                         await tx.CommitAsync();
