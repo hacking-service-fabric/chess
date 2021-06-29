@@ -13,17 +13,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chess.Queue.SMS", "Chess.Qu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chess.Queue.Move", "Chess.Queue.Move\Chess.Queue.Move.csproj", "{626EF4F9-3254-4F17-BD12-63C5481267B3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chess.Queue.SMS.Tests", "Chess.Queue.SMS.Tests\Chess.Queue.SMS.Tests.csproj", "{4C8E935E-1D76-4432-B796-86B2A5934CEB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chess.Data.Game", "Chess.Data.Game\Chess.Data.Game.csproj", "{3C71BCF8-0008-4B73-A3DB-38812227646B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chess.Data.Game", "Chess.Data.Game\Chess.Data.Game.csproj", "{3C71BCF8-0008-4B73-A3DB-38812227646B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chess.Data.Conversation", "Chess.Data.Conversation\Chess.Data.Conversation.csproj", "{C8F5ABB5-0BE1-426D-A443-44396C736C46}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chess.Data.Conversation", "Chess.Data.Conversation\Chess.Data.Conversation.csproj", "{C8F5ABB5-0BE1-426D-A443-44396C736C46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chess.Repository.Conversation", "Chess.Repository.Conversation\Chess.Repository.Conversation.csproj", "{4E2714DE-DF9C-4CDA-B1AB-7EF82A5087E6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chess.Repository.Conversation", "Chess.Repository.Conversation\Chess.Repository.Conversation.csproj", "{4E2714DE-DF9C-4CDA-B1AB-7EF82A5087E6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chess.Repository.BugReport", "Chess.Repository.BugReport\Chess.Repository.BugReport.csproj", "{6237FDF7-2041-4CBF-84DD-84255076F9DD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chess.Repository.BugReport", "Chess.Repository.BugReport\Chess.Repository.BugReport.csproj", "{6237FDF7-2041-4CBF-84DD-84255076F9DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chess.Data.Common", "Chess.Data.Common\Chess.Data.Common.csproj", "{D60455E2-AA86-43FB-9A69-62BC0D0A3879}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chess.Data.Common", "Chess.Data.Common\Chess.Data.Common.csproj", "{D60455E2-AA86-43FB-9A69-62BC0D0A3879}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chess.Data.Game.Tests", "Chess.Data.Game.Tests\Chess.Data.Game.Tests.csproj", "{F13F6366-365A-42FC-8B25-2D6209319094}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,14 +73,6 @@ Global
 		{626EF4F9-3254-4F17-BD12-63C5481267B3}.Release|Any CPU.Build.0 = Release|Any CPU
 		{626EF4F9-3254-4F17-BD12-63C5481267B3}.Release|x64.ActiveCfg = Release|Any CPU
 		{626EF4F9-3254-4F17-BD12-63C5481267B3}.Release|x64.Build.0 = Release|Any CPU
-		{4C8E935E-1D76-4432-B796-86B2A5934CEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4C8E935E-1D76-4432-B796-86B2A5934CEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4C8E935E-1D76-4432-B796-86B2A5934CEB}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{4C8E935E-1D76-4432-B796-86B2A5934CEB}.Debug|x64.Build.0 = Debug|Any CPU
-		{4C8E935E-1D76-4432-B796-86B2A5934CEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4C8E935E-1D76-4432-B796-86B2A5934CEB}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4C8E935E-1D76-4432-B796-86B2A5934CEB}.Release|x64.ActiveCfg = Release|Any CPU
-		{4C8E935E-1D76-4432-B796-86B2A5934CEB}.Release|x64.Build.0 = Release|Any CPU
 		{3C71BCF8-0008-4B73-A3DB-38812227646B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3C71BCF8-0008-4B73-A3DB-38812227646B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C71BCF8-0008-4B73-A3DB-38812227646B}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -121,6 +113,14 @@ Global
 		{D60455E2-AA86-43FB-9A69-62BC0D0A3879}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D60455E2-AA86-43FB-9A69-62BC0D0A3879}.Release|x64.ActiveCfg = Release|Any CPU
 		{D60455E2-AA86-43FB-9A69-62BC0D0A3879}.Release|x64.Build.0 = Release|Any CPU
+		{F13F6366-365A-42FC-8B25-2D6209319094}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F13F6366-365A-42FC-8B25-2D6209319094}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F13F6366-365A-42FC-8B25-2D6209319094}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F13F6366-365A-42FC-8B25-2D6209319094}.Debug|x64.Build.0 = Debug|Any CPU
+		{F13F6366-365A-42FC-8B25-2D6209319094}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F13F6366-365A-42FC-8B25-2D6209319094}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F13F6366-365A-42FC-8B25-2D6209319094}.Release|x64.ActiveCfg = Release|Any CPU
+		{F13F6366-365A-42FC-8B25-2D6209319094}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

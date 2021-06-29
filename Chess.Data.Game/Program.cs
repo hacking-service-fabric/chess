@@ -19,7 +19,7 @@ namespace Chess.Data.Game
                 // are automatically populated when you build this project.
                 // For more information, see https://aka.ms/servicefabricactorsplatform
 
-                await ActorRuntime.RegisterActorAsync<Game> (
+                await ActorRuntime.RegisterActorAsync<Game>(
                    (context, actorType) => new ActorService(context, actorType));
 
                 Thread.Sleep(Timeout.Infinite);

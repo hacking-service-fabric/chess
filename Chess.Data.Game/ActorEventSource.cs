@@ -1,14 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.Tracing;
-using System.Fabric;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.ServiceFabric.Actors.Runtime;
+using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Tracing;
+using System.Threading.Tasks;
 
 namespace Chess.Data.Game
 {
+    [ExcludeFromCodeCoverage]
     [EventSource(Name = "MyCompany-Chess.App-Chess.Data.Game")]
     internal sealed class ActorEventSource : EventSource
     {

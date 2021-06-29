@@ -4,6 +4,7 @@ using Microsoft.ServiceFabric.Actors;
 using Microsoft.ServiceFabric.Actors.Runtime;
 using PhoneNumbers;
 using System.Threading.Tasks;
+using Chess.Data.Game.Interfaces;
 
 namespace Chess.Data.Game
 {

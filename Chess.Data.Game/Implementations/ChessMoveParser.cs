@@ -1,37 +1,52 @@
 ﻿using Chess.Data.Common.Models.V1;
+using Chess.Data.Game.Interfaces;
 
 namespace Chess.Data.Game.Implementations
 {
     public class ChessMoveParser: IChessMoveParser
     {
+        private readonly IChessMoveParser<MoveResignDto> _resignParser;
+        private readonly IChessMoveParser<MoveCastleDto> _castleParser;
+        private readonly IChessMoveParser<MovePromotionDto> _promotionParser;
+        private readonly IChessMoveParser<MovePieceDto> _pieceParser;
+
+        public ChessMoveParser(
+            IChessMoveParser<MoveResignDto> resignParser,
+            IChessMoveParser<MoveCastleDto> castleParser,
+            IChessMoveParser<MovePromotionDto> promotionParser,
+            IChessMoveParser<MovePieceDto> pieceParser)
+        {
+            _resignParser = resignParser;
+            _castleParser = castleParser;
+            _promotionParser = promotionParser;
+            _pieceParser = pieceParser;
+        }
+
         public bool TryParse(string message, out MoveDtoBase result)
         {
-            if (MoveResignDto.TryParse(message, out var moveResign))
+            if (_resignParser.TryParse(message, out var moveResign))
             {
                 result = moveResign;
-                return true;
             }
-
-            if (MoveCastleDto.TryParse(message, out var moveCastle))
+            else if (_castleParser.TryParse(message, out var moveCastle))
             {
                 result = moveCastle;
-                return true;
             }
-
-            if (MovePromotionDto.TryParse(message, out var movePromotion))
+            else if (_promotionParser.TryParse(message, out var movePromotion))
             {
                 result = movePromotion;
-                return true;
             }
-
-            if (MovePieceDto.TryParse(message, out var movePiece))
+            else if (_pieceParser.TryParse(message, out var movePiece))
             {
                 result = movePiece;
-                return true;
+            }
+            else
+            {
+                result = null;
+                return false;
             }
 
-            result = null;
-            return false;
+            return true;
         }
     }
 }
