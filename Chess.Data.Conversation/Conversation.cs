@@ -49,17 +49,12 @@ namespace Chess.Data.Conversation
             throw new NotImplementedException();
         }
 
-        public async Task<IGame> NewGame()
+        public async Task<ushort> WriteMessage(MessageDto message)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<MessageDto> GetMessageAt(DateTime time)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<MessageDto> GetMessageBefore(MessageDto message)
+        public async Task<MessageDto> GetMessage(ushort messageId)
         {
             throw new NotImplementedException();
         }

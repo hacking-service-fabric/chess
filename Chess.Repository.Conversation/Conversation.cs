@@ -1,19 +1,23 @@
-using System;
+using Chess.Data.Common;
+using Chess.Data.Common.Models.V1;
+using Microsoft.ServiceFabric.Actors;
+using Microsoft.ServiceFabric.Actors.Client;
+using Microsoft.ServiceFabric.Data.Collections;
+using Microsoft.ServiceFabric.Services.Communication.Runtime;
+using Microsoft.ServiceFabric.Services.Remoting.Runtime;
+using Microsoft.ServiceFabric.Services.Runtime;
+using PhoneNumbers;
 using System.Collections.Generic;
 using System.Fabric;
 using System.Linq;
-using System.Threading;
 using System.Threading.Tasks;
-using Microsoft.ServiceFabric.Data.Collections;
-using Microsoft.ServiceFabric.Services.Communication.Runtime;
-using Microsoft.ServiceFabric.Services.Runtime;
 
 namespace Chess.Repository.Conversation
 {
     /// <summary>
     /// An instance of this class is created for each service replica by the Service Fabric runtime.
     /// </summary>
-    internal sealed class Conversation : StatefulService
+    internal sealed class Conversation : StatefulService, IConversationRepository
     {
         public Conversation(StatefulServiceContext context)
             : base(context)
@@ -27,42 +31,23 @@ namespace Chess.Repository.Conversation
         /// </remarks>
         /// <returns>A collection of listeners.</returns>
         protected override IEnumerable<ServiceReplicaListener> CreateServiceReplicaListeners()
+            => this.CreateServiceRemotingReplicaListeners();
+
+        public async Task<IConversation> GetConversation(ConversationDto conversation)
         {
-            return new ServiceReplicaListener[0];
-        }
+            var phoneUtil = PhoneNumberUtil.GetInstance();
+            using var tx = StateManager.CreateTransaction();
 
-        /// <summary>
-        /// This is the main entry point for your service replica.
-        /// This method executes when this replica of your service becomes primary and has write status.
-        /// </summary>
-        /// <param name="cancellationToken">Canceled when Service Fabric needs to shut down this service replica.</param>
-        protected override async Task RunAsync(CancellationToken cancellationToken)
-        {
-            // TODO: Replace the following sample code with your own logic 
-            //       or remove this RunAsync override if it's not needed in your service.
+            var conversations = await StateManager.GetOrAddAsync<IReliableDictionary<string, ActorId>>(tx,
+                phoneUtil.Format(conversation.HostPhoneNumber, PhoneNumberFormat.E164));
 
-            var myDictionary = await this.StateManager.GetOrAddAsync<IReliableDictionary<string, long>>("myDictionary");
+            var actorId = string.Join("/", conversation.PhoneNumbers
+                .Select(p => phoneUtil.Format(p, PhoneNumberFormat.E164))
+                .OrderBy(p => p));
+            var conversationId = await conversations.GetOrAddAsync(tx, actorId, key => new ActorId(key));
 
-            while (true)
-            {
-                cancellationToken.ThrowIfCancellationRequested();
-
-                using (var tx = this.StateManager.CreateTransaction())
-                {
-                    var result = await myDictionary.TryGetValueAsync(tx, "Counter");
-
-                    ServiceEventSource.Current.ServiceMessage(this.Context, "Current Counter Value: {0}",
-                        result.HasValue ? result.Value.ToString() : "Value does not exist.");
-
-                    await myDictionary.AddOrUpdateAsync(tx, "Counter", 0, (key, value) => ++value);
-
-                    // If an exception is thrown before calling CommitAsync, the transaction aborts, all changes are 
-                    // discarded, and nothing is saved to the secondary replicas.
-                    await tx.CommitAsync();
-                }
-
-                await Task.Delay(TimeSpan.FromSeconds(1), cancellationToken);
-            }
+            await tx.CommitAsync();
+            return ActorProxy.Create<IConversation>(conversationId);
         }
     }
 }

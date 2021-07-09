@@ -1,6 +1,5 @@
 using Chess.Data.Common.Models.V1;
 using Chess.Queue.Common;
-using Chess.Queue.Common.Models;
 using Microsoft.AspNetCore.Http;
 using PhoneNumbers;
 using System;
@@ -10,16 +9,16 @@ using System.Threading.Tasks;
 
 namespace Chess.TestUI
 {
-    public class BackendMiddleware: IMiddleware
+    public class BackendMiddleware : IMiddleware
     {
-        private readonly ISmsQueueServiceAccessor _queueServiceAccessor;
+        private readonly ISmsQueueService _queueService;
 
         private readonly List<string> _conversation = new List<string>();
         private int _lastResponse = -1;
 
-        public BackendMiddleware(ISmsQueueServiceAccessor queueServiceAccessor)
+        public BackendMiddleware(ISmsQueueService queueService)
         {
-            _queueServiceAccessor = queueServiceAccessor;
+            _queueService = queueService;
         }
 
         public async Task InvokeAsync(HttpContext context, RequestDelegate next)
@@ -89,15 +88,11 @@ namespace Chess.TestUI
                 };
                 var payload = context.Request.Form["text"];
 
-                await _queueServiceAccessor.GetInstance(recipients).Enqueue(new SmsModel
+                await _queueService.Enqueue(new ConversationDto
                 {
-                    Conversation = new ConversationDto
-                    {
-                        HostPhoneNumber = new PhoneNumber(),
-                        PhoneNumbers = recipients
-                    },
-                    TextContent = payload
-                });
+                    HostPhoneNumber = new PhoneNumber(),
+                    PhoneNumbers = recipients
+                }, new MessageDto { Text = payload });
 
                 _conversation.Add(context.Request.Form["text"]);
             }
